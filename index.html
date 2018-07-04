@@ -3,61 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <title>159 AVR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1", user-scalable="no">
     
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-
-<div class="core" id="159">
-    <p>159</p>
-</div>
     
-<div class="node" id="torrent">
-    <p>torrent</p>
-</div>
-
-<script>
-var nodeElements = document.getElementsByClassName("node");
-
-for(i = 0; i < nodeElements.length; i++) {
-    dragElement(nodeElements[i]);
-}
-
-function dragElement(elmnt) {
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    elmnt.onmousedown = dragMouseDown;
+    <div class="core" id="159">
+        <p>159</p>
+    </div>
     
-    function dragMouseDown(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // get the mouse cursor position at startup:
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        document.onmouseup = closeDragElement;
-        // call a function whenever the cursor moves:
-        document.onmousemove = elementDrag;
-    }
+    <div class="node" id="torrent" style="left: 60vw; top: 50vh;">
+        <p>torrent</p>
+    </div>
+    
+    <canvas id="lines" width="5000" height="5000">
+        <!--<svg width="100vw" height="100vh"><line id="torrentline" style="stroke:white; stroke-width:2;"></line></svg>-->
+    </canvas>
+    
 
-    function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // calculate the new cursor position:
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        // set the element's new position:
-        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-    }
+    <script>
+        var nodeElements = document.getElementsByClassName("node");
 
-    function closeDragElement() {
-        /* stop moving when mouse button is released:*/
-        document.onmouseup = null;
-        document.onmousemove = null;
-    }
-}
-</script>
+        for(i = 0; i < nodeElements.length; i++) {
+            dragElement(nodeElements[i]);
+            
+            var corePosData = document.getElementsByClassName('core')[0].getBoundingClientRect();
+            var nodePosData = nodeElements[i].getBoundingClientRect();
+            
+            var c=document.getElementById("lines");
+            var ctx=c.getContext("2d");
+            ctx.strokeStyle="#ffffff";
+            ctx.lineWidth=2;
+            drawConnections();
+        }
+        
+        function drawConnections(){
+            nodePosData = nodeElements[i].getBoundingClientRect();
+            ctx.beginPath();
+            ctx.moveTo(corePosData.left,corePosData.top);
+            ctx.lineTo(nodePosData.left,nodePosData.top);
+            ctx.stroke();
+        }
+
+        function dragElement(elmnt) {
+            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            elmnt.onmousedown = dragMouseDown;
+            
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // call a function whenever the cursor moves:
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // set the element's new position:
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+                
+                ctx.clearRect(0, 0, c.width, c.height);
+                for(i = 0; i < nodeElements.length; i++) {
+                    drawConnections();
+                }
+                }
+
+            function closeDragElement() {
+                /* stop moving when mouse button is released:*/
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+    </script>
 
 </body>
 </html>
