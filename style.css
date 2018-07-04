@@ -1,0 +1,43 @@
+*{
+    border-width: 2px;
+    border-color: white;
+}
+
+body{
+    margin: 0;
+    background: black;
+    color: white;
+    font: 16px Helvetica, Sans-serif;
+}
+
+p{
+    margin: 0;
+    padding: .2em .5em;
+}
+
+.core *, .node *{
+    background: black;
+}
+
+.core{
+    position: absolute;
+    left: 50%;
+    top: 35vh;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.node{
+    position: absolute;
+    cursor: move;
+}
+
+.core p{
+    border-style: solid;
+    display: inline-block;
+}
+
+.node p{
+    border-style: solid;
+    border-radius: 1em;
+    display: inline-block;
+}
